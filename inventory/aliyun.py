@@ -112,8 +112,14 @@ class AliyunInventory:
         ips[key[:-len('Address')]] = value['IpAddress'][0]
 
     instance.update(ips)
-    return instance
 
+    eips = dict()
+    for key, value in instance.iteritems():
+      if isinstance(value, dict) and 'IpAddress' in value and len(value['IpAddress']) > 0 and key.endswith('EipAddress'):
+        eips[key[:-len('Address')]] = value['IpAddress']  
+    
+    instance.update(eips)
+    return instance
 
   def ssh_options(self, kind, name, instance):
     options = dict(self.config.items(kind))
@@ -177,4 +183,3 @@ class AliyunInventory:
 
 
 AliyunInventory()
-
