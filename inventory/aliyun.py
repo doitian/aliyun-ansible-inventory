@@ -99,8 +99,10 @@ class AliyunInventory:
       for tag in ecs['Description'].split(','):
         tag = tag.strip()
         if len(tag) > 0:
-          index['tag_' + self.to_safe(tag)].append(safe_name)
-
+          index['des_' + self.to_safe(tag)].append(safe_name)
+      if 'Tags' in ecs.keys():
+        for k in ecs['Tags']['Tag']:
+          index[self.to_safe(k['TagKey']) + "_" + self.to_safe(k['TagValue'])].append(safe_name)
       ecs = self.extract_ips(ecs)
       ssh_options = self.ssh_options('ecs', safe_name, ecs)
       index['_meta']['hostvars'][safe_name] = dict(ssh_options, aliyun = ecs)
@@ -119,6 +121,13 @@ class AliyunInventory:
         eips[key[:-len('Address')]] = value['IpAddress']  
     
     instance.update(eips)
+
+    vips = dict()
+    for key, value in instance.iteritems():
+      if isinstance(value, dict) and 'PrivateIpAddress' in value and len(value['PrivateIpAddress']['IpAddress']) > 0 and key.endswith('VpcAttributes'):
+        vips['Vip'] = value['PrivateIpAddress']['IpAddress'][0]
+
+    instance.update(vips)
     return instance
 
   def ssh_options(self, kind, name, instance):
