@@ -75,7 +75,7 @@ ecs 使用 InstanceName 字段, 也就是管理后台中可以修改的名称。
 
 首先所有的资源都按照类型进行了分组，ecs 主机都属于 ecs 这个组。
 
-另外 ecs 还支持自定义分组，规则是使用『描述』(对应 API 返回结果中的 Description)。业务组名称使用英文逗号分隔之后并加上 `tag_` 前缀即为该主机要加入的 ansible 主机组。比如主机 ops 的业务组名称是 `dev,public` 那么在 ansible 中会包含在组 `tag_dev` 和 `tag_public` 中。
+另外 ecs 还支持自定义分组，规则是使用『描述』(对应 API 返回结果中的 Description)。业务组名称使用英文逗号分隔之后并加上 `des_` 前缀即为该主机要加入的 ansible 主机组。比如主机 ops 的业务组名称是 `dev,public` 那么在 ansible 中会包含在组 `des_dev` 和 `des_public` 中。Aliyun 本身的 Tag 也会转成对应的分组，规则是 `KEY_VALUE`。
 
 ## 主机变量名
 
