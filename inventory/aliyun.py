@@ -118,8 +118,8 @@ class AliyunInventory:
     eips = dict()
     for key, value in instance.iteritems():
       if isinstance(value, dict) and 'IpAddress' in value and len(value['IpAddress']) > 0 and key.endswith('EipAddress'):
-        eips[key[:-len('Address')]] = value['IpAddress']  
-    
+        eips['EipAddress'] = value['IpAddress']
+
     instance.update(eips)
 
     vips = dict()
