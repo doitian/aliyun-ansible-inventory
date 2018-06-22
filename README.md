@@ -63,6 +63,10 @@
 
 	inventory/aliyun.py --refresh-cache
 
+还可以在inventory/aliyun.ini中关闭缓存功能
+
+    cache_disable = True
+
 # 命名规则
 
 ## 主机名
