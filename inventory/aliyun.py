@@ -71,7 +71,22 @@ class AliyunInventory:
         pass
       else: raise
 
-    self.cache_max_age = config.getint('cache', 'max_age')
+    # Determine whether max_age parameters exist
+    try:
+        config.getint('cache', 'max_age')
+    except:
+        self.cache_max_age = 86400
+    else:
+        self.cache_max_age = config.getint('cache', 'max_age')
+
+    # Determine whether cache_disable parameters exist
+    try:
+        config.getboolean('cache', 'cache_disable')
+    except:
+        self.cache_disable = False
+    else:
+        self.cache_disable = config.getboolean('cache', 'cache_disable')
+
 
 
   def is_cache_valid(self):
@@ -144,7 +159,7 @@ class AliyunInventory:
 
 
   def load_inventory(self):
-    if self.args.refresh_cache or not self.is_cache_valid():
+    if self.args.refresh_cache or not self.is_cache_valid() or self.cache_disable:
       self.inventory = self.build_inventory()
       self.write_cache()
     else:
